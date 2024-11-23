@@ -1,10 +1,28 @@
+// models/Habit.js
 const mongoose = require('mongoose');
 
 const habitSchema = new mongoose.Schema({
-  name: { type: String, required: true }, // Name of the habit
-  description: { type: String },         // Description of the habit
-  streak: { type: Number, default: 0 },  // Current streak count
-  createdAt: { type: Date, default: Date.now }, // Creation date
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  streak: {
+    type: Number,
+    default: 0,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  is_completed: {
+    type: Boolean,
+    default: false, // Habit is not completed initially
+  },
 });
 
-module.exports = mongoose.model('Habit', habitSchema);
+const Habit = mongoose.model('Habit', habitSchema);
+module.exports = Habit;

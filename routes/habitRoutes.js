@@ -1,23 +1,19 @@
+// routes/habitRoute.js
 const express = require('express');
+const router = express.Router();
 const {
   getAllHabits,
   addHabit,
   updateHabit,
   deleteHabit,
-} = require('../controllers/habitController'); // Import controller functions
+  markHabitCompleted,
+} = require('../controllers/habitController');
 
-const router = express.Router();
-
-// Route to get all habits
-router.get('/', getAllHabits);
-
-// Route to add a new habit
-router.post('/', addHabit);
-
-// Route to update a habit by ID
-router.put('/:id', updateHabit);
-
-// Route to delete a habit by ID
-router.delete('/:id', deleteHabit);
+// Routes for habits
+router.get('/habits', getAllHabits); // Get all habits
+router.post('/habits', addHabit); // Add new habit
+router.put('/habits/:habitId', updateHabit); // Update habit details
+router.delete('/habits/:habitId', deleteHabit); // Delete habit
+router.patch('/habits/:habitId/complete', markHabitCompleted); // Mark habit as completed
 
 module.exports = router;
