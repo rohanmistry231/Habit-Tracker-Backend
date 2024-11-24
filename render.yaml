@@ -9,11 +9,8 @@ services:
       - key: NODE_ENV
         value: production
       - key: STORAGE_PATH
-        value: /mnt/data/uploads
+        value: /tmp/uploads # Updated to use /tmp for temporary file storage
       - key: MONGODB_URI
         value: "mongodb+srv://rohanmistry231:QP2DRXJazjVP6QiV@cluster0.ohelp.mongodb.net/Habits?retryWrites=true&w=majority&appName=Cluster0"
       - key: PORT
         value: "5000"
-    disk:
-      name: habits-data
-      mountPath: /mnt/data/uploads
