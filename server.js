@@ -56,7 +56,7 @@ app.use("/uploads", express.static(uploadsDir));
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect("mongodb+srv://rohanmistry231:QP2DRXJazjvP6QiV@cluster0.ohelp.mongodb.net/Habits?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("Connection failed", err));
 
