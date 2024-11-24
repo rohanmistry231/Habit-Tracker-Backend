@@ -1,14 +1,23 @@
 const Habit = require('../models/Habit');
+const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 
-// Set up multer for file upload
+// Set up multer storage with dynamic folder creation
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Define where to store the uploaded files
+  destination: (req, file, cb) => {
+    const habitId = req.params.id; // Get habit ID from request params
+    const uploadDir = path.join(__dirname, '..', 'uploads', habitId);
+
+    // Create folder if it doesn't exist
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    cb(null, uploadDir); // Set destination to the habit-specific folder
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename based on timestamp
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
   },
 });
 
@@ -71,7 +80,6 @@ const updateHabit = async (req, res) => {
 const addDailyUpload = async (req, res) => {
   const { id } = req.params; // Habit ID
 
-  // Handle file upload using multer
   upload.single('photo')(req, res, async (err) => {
     if (err) {
       return res.status(500).json({ message: 'Failed to upload image', error: err.message });
@@ -82,7 +90,7 @@ const addDailyUpload = async (req, res) => {
       return res.status(400).json({ message: 'Image file is required' });
     }
 
-    const imageUrl = `/uploads/${file.filename}`; // Path to the uploaded image
+    const imageUrl = `/uploads/${id}/${file.filename}`; // Path to the uploaded image
 
     try {
       const habit = await Habit.findById(id);
@@ -93,7 +101,7 @@ const addDailyUpload = async (req, res) => {
 
       // Get today's date
       const today = new Date().toDateString();
-      const todayDate = new Date(); // Use the current date to store the upload
+      const todayDate = new Date();
 
       const lastUpload = habit.uploads.length > 0 ? habit.uploads[habit.uploads.length - 1]?.date?.toDateString() : null;
 
@@ -111,8 +119,8 @@ const addDailyUpload = async (req, res) => {
           habit.streak = 1; // Reset streak if the previous upload was not yesterday
         }
 
-        // Optionally mark habit as completed after successful upload
-        habit.is_completed = true; // Mark as completed for today
+        // Mark habit as completed
+        habit.is_completed = true;
       } else {
         return res.status(400).json({ message: 'Upload for today already exists' });
       }
