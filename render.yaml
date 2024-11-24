@@ -19,5 +19,5 @@ services:
       mountPath: /opt/habits # Required field
     routes:
       - type: static
-        path: /uploads # URL path for serving static files
+        dest: /uploads # URL path for serving static files
         source: /mnt/data/uploads # Path to the folder containing static files
