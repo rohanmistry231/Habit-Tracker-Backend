@@ -6,6 +6,7 @@ const path = require("path");
 const multer = require("multer"); // Multer for handling file uploads
 const habitRoutes = require("./routes/habitRoutes");
 require("dotenv").config();
+const fs = require("fs");
 
 const app = express();
 
@@ -34,24 +35,24 @@ app.use(
 // Middleware to parse JSON requests
 app.use(express.json());
 
-// Set up Multer for file uploads
+// Use the Render-mounted disk for file uploads
+const uploadsDir = process.env.STORAGE_PATH || "/mnt/data/uploads";
+
+// Ensure the uploads directory exists
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Configure Multer for uploads to the specified directory
 const upload = multer({
-  dest: "uploads/", // Directory to store uploaded files
+  dest: uploadsDir,
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit for file size
   },
 });
 
-// Ensure that the "uploads" folder exists, or create it
-const fs = require("fs");
-const uploadsDir = path.join(__dirname, "uploads");
-
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Serve static files (images, etc.) from the 'uploads' directory
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static files from the Render-mounted disk
+app.use("/uploads", express.static(uploadsDir));
 
 // Connect to MongoDB
 mongoose

@@ -9,15 +9,11 @@ services:
       - key: NODE_ENV
         value: production
       - key: STORAGE_PATH
-        value: /mnt/data/uploads # Path for uploaded files
+        value: /mnt/data/uploads
       - key: MONGODB_URI
         value: "mongodb+srv://rohanmistry231:QP2DRXJazjVP6QiV@cluster0.ohelp.mongodb.net/Habits?retryWrites=true&w=majority&appName=Cluster0"
       - key: PORT
         value: "5000"
     disk:
-      name: habits-data # Required field
-      mountPath: /opt/habits # Required field
-    routes:
-      - type: static
-        dest: /uploads # URL path for serving static files
-        source: /mnt/data/uploads # Path to the folder containing static files
+      name: habits-data
+      mountPath: /mnt/data/uploads
