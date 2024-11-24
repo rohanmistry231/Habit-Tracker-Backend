@@ -79,5 +79,5 @@ app.post("/upload", upload.single("image"), (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 5000; // Fallback to 5000 if PORT is not defined
+const PORT = 5000; // Fallback to 5000 if PORT is not defined
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
