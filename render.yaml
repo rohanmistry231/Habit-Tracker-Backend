@@ -9,25 +9,15 @@ services:
       - key: NODE_ENV
         value: production
       - key: STORAGE_PATH
-        value: /mnt/data/uploads  # Path for uploaded files
+        value: /mnt/data/uploads # Path for uploaded files
       - key: MONGODB_URI
-        value: "mongodb+srv://rohanmistry231:QP2DRXJazjvP6QiV@cluster0.ohelp.mongodb.net/Habits?retryWrites=true&w=majority&appName=Cluster0"
+        value: "mongodb+srv://rohanmistry231:QP2DRXJazjVP6QiV@cluster0.ohelp.mongodb.net/Habits?retryWrites=true&w=majority&appName=Cluster0"
       - key: PORT
         value: "5000"
     disk:
       name: habits-data # Required field
       mountPath: /opt/habits # Required field
-      size: 1GB  # Set size for the persistent disk
     routes:
       - type: static
-        url: /uploads  # This exposes the 'uploads' folder publicly via '/uploads'
-        directory: /mnt/data/uploads
-
-    # Optionally, define any external services or databases here if needed
-    # For example:
-    # databases:
-    #   - name: your-database
-    #     plan: free
-    #     envVars:
-    #       - key: DATABASE_URL
-    #         value: your-database-url
+        path: /uploads # URL path for serving static files
+        source: /mnt/data/uploads # Path to the folder containing static files
