@@ -36,7 +36,7 @@ app.use(
 app.use(express.json());
 
 // Use the Render-mounted disk for file uploads
-const uploadsDir = process.env.STORAGE_PATH || "/mnt/data/uploads";
+const uploadsDir = "/tmp/uploads";
 
 // Ensure the uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
