@@ -15,6 +15,8 @@ services:
       - key: PORT
         value: "5000"
     disk:
+      name: habits-data # Required field
+      mountPath: /opt/habits # Required field
       size: 1GB  # Set size for the persistent disk
     routes:
       - type: static
