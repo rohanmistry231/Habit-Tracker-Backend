@@ -15,7 +15,9 @@ const getAllHabits = async (req, res) => {
     const habits = await Habit.find();
     res.status(200).json(habits);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch habits", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch habits", error: error.message });
   }
 };
 
@@ -32,7 +34,9 @@ const addHabit = async (req, res) => {
     const savedHabit = await newHabit.save();
     res.status(201).json(savedHabit);
   } catch (error) {
-    res.status(500).json({ message: "Failed to add habit", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to add habit", error: error.message });
   }
 };
 
@@ -54,7 +58,9 @@ const updateHabit = async (req, res) => {
 
     res.status(200).json(updatedHabit);
   } catch (error) {
-    res.status(500).json({ message: "Failed to update habit", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update habit", error: error.message });
   }
 };
 
@@ -64,7 +70,9 @@ const addDailyUpload = async (req, res) => {
 
   upload.single("photo")(req, res, async (err) => {
     if (err) {
-      return res.status(500).json({ message: "Failed to upload image", error: err.message });
+      return res
+        .status(500)
+        .json({ message: "Failed to upload image", error: err.message });
     }
 
     const { file } = req;
@@ -83,9 +91,10 @@ const addDailyUpload = async (req, res) => {
       const today = new Date().toDateString();
       const todayDate = new Date();
 
-      const lastUpload = habit.uploads.length > 0
-        ? habit.uploads[habit.uploads.length - 1]?.date?.toDateString()
-        : null;
+      const lastUpload =
+        habit.uploads.length > 0
+          ? habit.uploads[habit.uploads.length - 1]?.date?.toDateString()
+          : null;
 
       if (lastUpload !== today) {
         // Save image path temporarily and push upload record
@@ -104,13 +113,17 @@ const addDailyUpload = async (req, res) => {
 
         habit.is_completed = true;
       } else {
-        return res.status(400).json({ message: "Upload for today already exists" });
+        return res
+          .status(400)
+          .json({ message: "Upload for today already exists" });
       }
 
       const updatedHabit = await habit.save();
       res.status(200).json(updatedHabit);
     } catch (error) {
-      res.status(500).json({ message: "Failed to add daily upload", error: error.message });
+      res
+        .status(500)
+        .json({ message: "Failed to add daily upload", error: error.message });
     }
   });
 };
@@ -142,7 +155,9 @@ const deleteDailyUpload = async (req, res) => {
     const updatedHabit = await habit.save();
     res.status(200).json(updatedHabit);
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete daily upload", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete daily upload", error: error.message });
   }
 };
 
@@ -157,9 +172,13 @@ const deleteHabit = async (req, res) => {
       return res.status(404).json({ message: "Habit not found" });
     }
 
-    res.status(200).json({ message: "Habit deleted successfully", habit: deletedHabit });
+    res
+      .status(200)
+      .json({ message: "Habit deleted successfully", habit: deletedHabit });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete habit", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete habit", error: error.message });
   }
 };
 
